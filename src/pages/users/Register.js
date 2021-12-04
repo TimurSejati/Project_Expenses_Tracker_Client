@@ -1,16 +1,45 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
+import { registerUserAction } from "../../redux/slices/users/usersSlice";
+import DisabledButton from "../../components/DisabledButton";
+
+// Form validations
+const formSchema = Yup.object({
+	email: Yup.string().required("Email is required"),
+	password: Yup.string().required("Password is required"),
+	firstName: Yup.string().required("First Name is required"),
+	lastName: Yup.string().required("Last Name is required"),
+});
 
 const Register = () => {
+	// dispatch
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	// Get data from store
+	const user = useSelector((state) => state?.users)
+	const { userAppErr, userServerErr, userLoading, isRegistered } = user
+
 	const formik = useFormik({
 		initialValues: {
 			email: '',
-			password: ''
+			password: '',
+			firstName: '',
+			lastName: '',
 		},
 		onSubmit: values => {
-			console.log(values);
-		}
+			dispatch(registerUserAction(values));
+		},
+		validationSchema: formSchema
 	});
+
+	// Redirect
+	useEffect(() => {
+		if (isRegistered) return navigate('/login');
+	}, [isRegistered])
 
 
 	return (
@@ -28,39 +57,39 @@ const Register = () => {
 					</div>
 					<div className="col-12 col-lg-5 ms-auto">
 						<div className="p-5 text-center rounded bg-light">
-							<form onSubmit={formik.handleSubmit()}>
+							<form onSubmit={formik.handleSubmit}>
 								<span className="text-muted">New User</span>
 								<h3 className="mb-5 fw-bold">Register</h3>
 
 								{/* Display err here */}
-								{/* {userAppErr || userServerErr ? (
-                  <div class="alert alert-danger" role="alert">
-                    {userServerErr} {userAppErr}
-                  </div>
-                ) : null} */}
+								{userAppErr || userServerErr ? (
+									<div class="alert alert-danger" role="alert">
+										{userServerErr} {userAppErr}
+									</div>
+								) : null}
 								<input
-									// value={formik.values.firstname}
-									// onChange={formik.handleChange("firstname")}
-									// onBlur={formik.handleBlur("firstname")}
+									value={formik.values.firstName}
+									onChange={formik.handleChange("firstName")}
+									onBlur={formik.handleBlur("firstName")}
 									className="mb-2 form-control"
 									type="text"
 									placeholder="First Name"
 								/>
 								{/* Err */}
-								{/* <div className="mb-2 text-danger">
-                  {formik.touched.firstname && formik.errors.firstname}
-                </div> */}
+								<div className="mb-2 text-danger">
+									{formik.touched.firstName && formik.errors.firstName}
+								</div>
 								<input
-									// value={formik.values.lastname}
-									// onChange={formik.handleChange("lastname")}
-									// onBlur={formik.handleBlur("lastname")}
+									value={formik.values.lastName}
+									onChange={formik.handleChange("lastName")}
+									onBlur={formik.handleBlur("lastName")}
 									className="mb-2 form-control"
 									type="text"
 									placeholder="Last Name"
 								/>
 								{/* Err */}
 								<div className="mb-2 text-danger">
-									{/* {formik.touched.lastname && formik.errors.lastname} */}
+									{formik.touched.lastName && formik.errors.lastName}
 								</div>
 								<input
 									value={formik.values.email}
@@ -72,7 +101,7 @@ const Register = () => {
 								/>
 								{/* Err */}
 								<div className="mb-2 text-danger">
-									{/* {formik.touched.email && formik.errors.email} */}
+									{formik.touched.email && formik.errors.email}
 								</div>
 								<input
 									value={formik.values.password}
@@ -84,15 +113,17 @@ const Register = () => {
 								/>
 								{/* Err */}
 								<div className="mb-2 text-danger">
-									{/* {formik.touched.password && formik.errors.password} */}
+									{formik.touched.password && formik.errors.password}
 								</div>
 
-								<button
+								{userLoading ? <DisabledButton /> : <button
 									type="submit"
 									className="py-2 mb-4 btn btn-primary w-100"
 								>
 									Register
-								</button>
+								</button>}
+
+
 							</form>
 						</div>
 					</div>

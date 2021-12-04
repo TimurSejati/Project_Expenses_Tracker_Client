@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+import { loginUserAction } from "../../redux/slices/users/usersSlice";
+import DisabledButton from "../../components/DisabledButton";
+
 
 // Form validations
 const formSchema = Yup.object({
@@ -10,6 +15,12 @@ const formSchema = Yup.object({
 
 
 const Login = () => {
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
+	// Get data from store
+	const user = useSelector((state) => state?.users)
+	const { userAppErr, userServerErr, userLoading, userAuth } = user
 
 	const formik = useFormik({
 		initialValues: {
@@ -17,10 +28,15 @@ const Login = () => {
 			password: ''
 		},
 		onSubmit: values => {
-			console.log(values);
+			dispatch(loginUserAction(values))
 		},
 		validationSchema: formSchema
 	});
+
+	// Redirect
+	useEffect(() => {
+		if (userAuth) return navigate('/')
+	}, [userAuth])
 
 	return (
 		<section
@@ -45,11 +61,11 @@ const Login = () => {
 							<h3 className="mb-5 fw-bold">Login to your account</h3>
 							{/* Display Err */}
 
-							{/* {userAppErr || userServerErr ? (
-                <div class="alert alert-danger" role="alert">
-                  {userServerErr} {userAppErr}
-                </div>
-              ) : null} */}
+							{userAppErr || userServerErr ? (
+								<div className="alert alert-danger" role="alert">
+									{userServerErr} {userAppErr}
+								</div>
+							) : null}
 							<form onSubmit={formik.handleSubmit}>
 								<input
 									value={formik.values.email}
@@ -77,12 +93,12 @@ const Login = () => {
 								</div>
 
 								<div>
-									<button
+									{userLoading ? <DisabledButton /> : <button
 										type="submit"
 										className="py-2 mb-4 btn btn-primary w-100"
 									>
 										Login
-									</button>
+									</button>}
 								</div>
 							</form>
 						</div>
