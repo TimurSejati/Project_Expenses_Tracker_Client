@@ -5,19 +5,19 @@ import AppPagination from "../../components/AppPagination";
 import ContentDetails from "../../components/ContentDetails";
 import ErrorDisplayMessage from "../../components/ErrorDisplayMessage";
 import LoadingComponent from "../../components/Loading";
-import { fetchAllExpenseAction } from "../../redux/slices/expenses/expenseSlices";
+import { fetchAllIncomeAction } from "../../redux/slices/income/incomeSlices";
 
-const ExpensesList = () => {
+const IncomeList = () => {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   //get expenses from store
-  const expenses = useSelector(state => state.expenses);
-  const { loading, appErr, serverErr, expensesList } = expenses;
+  const income = useSelector(state => state.incomes);
+  const { loading, appErr, serverErr, incomesList } = income;
 
-  console.log(loading, appErr, serverErr, expensesList);
-  //fetch expenses
+  console.log(loading, appErr, serverErr, incomesList);
+  //fetch income
   useEffect(() => {
-    dispatch(fetchAllExpenseAction(+page));
+    dispatch(fetchAllIncomeAction(+page));
   }, [dispatch, page, setPage]);
 
   return (
@@ -41,8 +41,8 @@ const ExpensesList = () => {
                 <p className="mb-0">
                   Below is the history of your expense transactions records
                 </p>
-                <Link to="/add-expense" className="btn  btn-outline-danger me-2 m-2">
-                  New Expense
+                <Link to="/add-income" className="btn  btn-outline-success me-2 m-2">
+                  New Income
                 </Link>
               </div>
               <table className="table">
@@ -85,10 +85,10 @@ const ExpensesList = () => {
                     <h1>Loading...</h1>
                   ) : appErr || serverErr ? (
                     <div>err</div>
-                  ) : expensesList?.docs?.length <= 0 ? (
+                  ) : incomesList?.docs?.length <= 0 ? (
                     <h1>No Expense Found</h1>
                   ) : (
-                    expensesList?.docs?.map(exp => (
+                    incomesList?.docs?.map(exp => (
                       <ContentDetails key={exp?._id} item={exp} />
                     ))
                   )}
@@ -106,7 +106,7 @@ const ExpensesList = () => {
           >
             <AppPagination
               setPage={setPage}
-              pageNumber={expensesList?.totalPages}
+              pageNumber={incomesList?.totalPages}
             />
           </div>
         </section >
@@ -115,4 +115,4 @@ const ExpensesList = () => {
   );
 };
 
-export default ExpensesList;
+export default IncomeList;

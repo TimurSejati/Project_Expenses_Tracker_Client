@@ -1,14 +1,15 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
+import EditContent from './components/EditContent';
 import AdminRoute from './components/Navigation/AdminRoute';
 import Navbar from './components/Navigation/Navbar';
 import ProtectedRoute from './components/Navigation/ProtectedRoute';
 import NotAdmin from './components/NotAdmin';
 import AddExpense from './pages/expense/AddExpense';
-import EditExpense from './pages/expense/EditExpense';
 import ExpensesList from './pages/expense/ExpensesList';
 import Home from './pages/Home'
 import AddIncome from './pages/income/AddIncome';
+import IncomeList from './pages/income/IncomeList';
 import DashboardData from './pages/users/DashboardData';
 import Login from './pages/users/Login';
 import Profile from './pages/users/Profile';
@@ -40,14 +41,23 @@ function App() {
           <Route exact path="/expenses" element={<ExpensesList />} />
         </Route>
 
-        <Route exact path="/edit-expense/:id" element={<ProtectedRoute />}>
-          <Route exact path="/edit-expense/:id" element={<EditExpense />} />
+        <Route exact path="/edit/:id" element={<ProtectedRoute />}>
+          <Route exact path="/edit/:id" element={<EditContent />} />
         </Route>
 
         <Route exact path="/profile" element={<Profile />} />
 
         <Route exact path="/dashboard" element={<AdminRoute />}>
           <Route exact path="/dashboard" element={<DashboardData />} />
+        </Route>
+
+        {/* Income */}
+        <Route exact path="/add-income" element={<ProtectedRoute />}>
+          <Route exact path="/add-income" element={<AddIncome />} />
+        </Route>
+
+        <Route exact path="/incomes" element={<ProtectedRoute />}>
+          <Route exact path="/incomes" element={<IncomeList />} />
         </Route>
 
       </Routes>

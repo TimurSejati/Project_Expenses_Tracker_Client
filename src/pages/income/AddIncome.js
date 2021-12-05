@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import moneySVG from "../../img/money.svg";
-// import { createIncomeAction } from "../../redux/slices/income/incomeSlices";
+import { createIncomeAction } from "../../redux/slices/income/incomeSlices";
 import DisabledButton from "../../components/DisabledButton";
 // import ErrorDisplayMessage from "../../components/ErrorDisplayMessage";
 //form validations
@@ -26,19 +26,19 @@ const AddIncome = () => {
 			amount: "",
 		},
 		onSubmit: values => {
-			// dispatch(createIncomeAction(values));
+			dispatch(createIncomeAction(values));
 		},
 		validationSchema: formSchema,
 	});
 
 	//Get expense created from store
-	const state = useSelector(state => state.income);
-	// const { loading, appErr, serverErr, expenseCreated, isIncCreated } = state;
+	const state = useSelector(state => state.incomes);
+	const { loading, appErr, serverErr, incomeCreated, isIncCreated } = state;
 
-	//Redirect
-	// useEffect(() => {
-	// 	if (isIncCreated) history.push("/incomes");
-	// }, [isIncCreated, dispatch]);
+	// Redirect
+	useEffect(() => {
+		if (isIncCreated) history.push("/incomes");
+	}, [isIncCreated, dispatch]);
 	return (
 		<>
 			<section className="py-5 bg-success vh-100">
@@ -105,16 +105,13 @@ const AddIncome = () => {
 									<div className="text-danger mb-2">
 										{formik.touched.amount && formik.errors.amount}
 									</div>
-									{/* {loading ? (
+									{loading ? (
 										<DisabledButton />
 									) : (
-										<button type="submit" className="btn btn-danger mb-4 w-100">
+										<button type="submit" className="btn btn-success mb-4 w-100">
 											Record Income
 										</button>
-									)} */}
-									<button type="submit" className="btn btn-success mb-4 w-100">
-										Record Income
-									</button>
+									)}
 								</form>
 							</div>
 						</div>

@@ -18,7 +18,7 @@ const ContentDetails = ({ item }) => {
         <td className="p-6">
           <button
             // onClick={() => navigate(history, "edit", item)}
-            onClick={() => navigate(`/edit-expense/${item?._id}`, { state: { expense: item } })}
+            onClick={() => navigate(`/edit/${item?._id}`, { state: { item } })}
             className="badge bg-success-light text-success"
           >
             <svg
