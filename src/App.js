@@ -5,6 +5,7 @@ import Navbar from './components/Navigation/Navbar';
 import ProtectedRoute from './components/Navigation/ProtectedRoute';
 import NotAdmin from './components/NotAdmin';
 import AddExpense from './pages/expense/AddExpense';
+import ExpensesList from './pages/expense/ExpensesList';
 import Home from './pages/Home'
 import AddIncome from './pages/income/AddIncome';
 import DashboardData from './pages/users/DashboardData';
@@ -18,19 +19,31 @@ function App() {
       <Navbar />
       <Routes>
         <Route exact path="/" element={<Home />} />
+
         <Route exact path="/login" element={<Login />} />
+
         <Route exact path="/register" element={<Register />} />
+
         <Route exact path="/not-found" element={<NotAdmin />} />
+
         <Route exact path="/add-income" element={<ProtectedRoute />}>
           <Route exact path="/add-income" element={<AddIncome />} />
         </Route>
+
         <Route exact path="/add-expense" element={<ProtectedRoute />}>
           <Route exact path="/add-expense" element={<AddExpense />} />
         </Route>
+
+        <Route exact path="/expenses" element={<ProtectedRoute />}>
+          <Route exact path="/expenses" element={<ExpensesList />} />
+        </Route>
+
         <Route exact path="/profile" element={<Profile />} />
+
         <Route exact path="/dashboard" element={<AdminRoute />}>
           <Route exact path="/dashboard" element={<DashboardData />} />
         </Route>
+
       </Routes>
     </BrowserRouter>
 
