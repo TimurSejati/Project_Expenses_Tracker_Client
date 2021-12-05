@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-// import AppPagination from "../../components/AppPagination";
+import AppPagination from "../../components/AppPagination";
 import ContentDetails from "../../components/ContentDetails";
-// import ErrorDisplayMessage from "../../components/ErrorDisplayMessage";
-// import LoadingComponent from "../../components/Loading";
+import ErrorDisplayMessage from "../../components/ErrorDisplayMessage";
+import LoadingComponent from "../../components/Loading";
 import { fetchAllExpenseAction } from "../../redux/slices/expenses/expenseSlices";
 
 const ExpensesList = () => {
@@ -23,14 +23,11 @@ const ExpensesList = () => {
   return (
     <>
       {loading ? (
-        // <LoadingComponent />
-        <>
-        </>
+        <LoadingComponent />
       ) : appErr || serverErr ? (
-        <></>
-        // <ErrorDisplayMessage>
-        //   {serverErr} {appErr}
-        // </ErrorDisplayMessage>
+        <ErrorDisplayMessage>
+          {serverErr} {appErr}
+        </ErrorDisplayMessage>
       ) : (
         <section className="py-6">
           <div className="container-fluid">
@@ -107,10 +104,10 @@ const ExpensesList = () => {
               marginTop: "20px",
             }}
           >
-            {/* <AppPagination
+            <AppPagination
               setPage={setPage}
-              pageNumber={expenseList?.totalPages}
-            /> */}
+              pageNumber={expensesList?.totalPages}
+            />
           </div>
         </section >
       )}

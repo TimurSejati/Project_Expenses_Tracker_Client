@@ -1,7 +1,9 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
+import dateFormatter from "../utils/dateFormatter";
 
 const ContentDetails = ({ item }) => {
-  console.log(item);
+  const navigate = useNavigate();
   return (
     <>
       <tr className="align-middle text-dark">
@@ -12,10 +14,11 @@ const ContentDetails = ({ item }) => {
         <td className="p-6">{item?.title}</td>
         <td className="p-6">{item?.description}</td>
         <td className="p-6">{item?.amount}</td>
-        <td className="p-6">{item?.createdAt}</td>
+        <td className="p-6">{dateFormatter(item?.createdAt)}</td>
         <td className="p-6">
           <button
             // onClick={() => navigate(history, "edit", item)}
+            onClick={() => navigate(`/edit-expense/${item?._id}`, { state: { expense: item } })}
             className="badge bg-success-light text-success"
           >
             <svg

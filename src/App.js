@@ -5,6 +5,7 @@ import Navbar from './components/Navigation/Navbar';
 import ProtectedRoute from './components/Navigation/ProtectedRoute';
 import NotAdmin from './components/NotAdmin';
 import AddExpense from './pages/expense/AddExpense';
+import EditExpense from './pages/expense/EditExpense';
 import ExpensesList from './pages/expense/ExpensesList';
 import Home from './pages/Home'
 import AddIncome from './pages/income/AddIncome';
@@ -30,12 +31,17 @@ function App() {
           <Route exact path="/add-income" element={<AddIncome />} />
         </Route>
 
+        {/* Expense */}
         <Route exact path="/add-expense" element={<ProtectedRoute />}>
           <Route exact path="/add-expense" element={<AddExpense />} />
         </Route>
 
         <Route exact path="/expenses" element={<ProtectedRoute />}>
           <Route exact path="/expenses" element={<ExpensesList />} />
+        </Route>
+
+        <Route exact path="/edit-expense/:id" element={<ProtectedRoute />}>
+          <Route exact path="/edit-expense/:id" element={<EditExpense />} />
         </Route>
 
         <Route exact path="/profile" element={<Profile />} />
