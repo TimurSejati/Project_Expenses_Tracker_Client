@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import moneySVG from "../../img/money.svg";
-// import { createExpAction } from "../../redux/slices/expenses/expensesSlices";
+import { createExpenseAction } from "../../redux/slices/expenses/expenseSlices";
 import DisabledButton from "../../components/DisabledButton";
 // import ErrorDisplayMessage from "../../components/ErrorDisplayMessage";
 
@@ -27,19 +27,19 @@ const AddExpense = props => {
 			amount: "",
 		},
 		onSubmit: values => {
-			// dispatch(createExpAction(values));
+			dispatch(createExpenseAction(values));
 		},
 		validationSchema: formSchema,
 	});
 
 	//Get expense created from store
 	const state = useSelector(state => state.expenses);
-	// const { loading, appErr, serverErr, expenseCreated, isExpCreated } = state;
+	const { loading, appErr, serverErr, expenseCreated, isExpCreated } = state;
 
 	//Redirect
-	// useEffect(() => {
-	// 	if (isExpCreated) history.push("/expenses");
-	// }, [isExpCreated, dispatch]);
+	useEffect(() => {
+		if (isExpCreated) history.push("/expenses");
+	}, [isExpCreated, dispatch]);
 	return (
 		<>
 			<section className="py-5 bg-danger vh-100">
@@ -107,16 +107,13 @@ const AddExpense = props => {
 									<div className="text-danger mb-2">
 										{formik.touched.amount && formik.errors.amount}
 									</div>
-									{/* {loading ? (
+									{loading ? (
 										<DisabledButton />
 									) : (
 										<button type="submit" className="btn btn-danger mb-4 w-100">
 											Record Expense
 										</button>
-									)} */}
-									<button type="submit" className="btn btn-danger mb-4 w-100">
-										Record Expense
-									</button>
+									)}
 								</form>
 							</div>
 						</div>
