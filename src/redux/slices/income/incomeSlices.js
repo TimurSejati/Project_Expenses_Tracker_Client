@@ -1,6 +1,11 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import baseURL from '../../../utils/baseURL';
+
+// Action for redirec
+export const resetIncomeCreated = createAction("income/created/reset");
+export const resetIncomeUpdated = createAction("income/update/reset");
+
 
 // Income Action
 export const createIncomeAction = createAsyncThunk('income/create', async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -16,6 +21,7 @@ export const createIncomeAction = createAsyncThunk('income/create', async (paylo
 	try {
 		// http call
 		const { data } = await axios.post(`${baseURL}/income/create`, payload, config)
+		dispatch(resetIncomeCreated())
 		return data;
 	} catch (error) {
 		if (!error?.response) {
@@ -38,6 +44,7 @@ export const updateIncomeAction = createAsyncThunk('income/update', async (paylo
 	try {
 		// http call
 		const { data } = await axios.put(`${baseURL}/income/${payload?.id}`, payload, config)
+		dispatch(resetIncomeUpdated())
 		return data;
 	} catch (error) {
 		if (!error?.response) {
@@ -78,6 +85,10 @@ const incomeSlice = createSlice({
 		builder.addCase(createIncomeAction.pending, (state, action) => {
 			state.loading = true;
 		});
+		// reset action
+		builder.addCase(resetIncomeCreated, (state, action) => {
+			state.isIncomeCreated = true;
+		});
 
 		// Handle success state
 		builder.addCase(createIncomeAction.fulfilled, (state, action) => {
@@ -85,6 +96,7 @@ const incomeSlice = createSlice({
 			state.incomeCreated = action?.payload;
 			state.appError = undefined;
 			state.serverErr = undefined;
+			state.isIncomeCreated = false;
 		})
 
 		// Handle success state
@@ -121,12 +133,17 @@ const incomeSlice = createSlice({
 			state.loading = true;
 		});
 
+		builder.addCase(resetIncomeUpdated, (state, action) => {
+			state.isIncomeUpdated = true;
+		});
+
 		// Handle success state
 		builder.addCase(updateIncomeAction.fulfilled, (state, action) => {
 			state.loading = false;
 			state.incomeUpdated = action?.payload;
 			state.appError = undefined;
 			state.serverErr = undefined;
+			state.isIncomeUpdated = false;
 		})
 
 		// Handle success state

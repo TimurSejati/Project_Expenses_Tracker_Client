@@ -1,6 +1,11 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import baseURL from '../../../utils/baseURL';
+
+
+// Action for redirec
+export const resetExpenseCreated = createAction("expense/created/reset");
+export const resetExpenseUpdated = createAction("expense/update/reset");
 
 // Expense Action
 export const createExpenseAction = createAsyncThunk('expense/create', async (payload, { rejectWithValue, getState, dispatch }) => {
@@ -16,6 +21,7 @@ export const createExpenseAction = createAsyncThunk('expense/create', async (pay
 	try {
 		// http call
 		const { data } = await axios.post(`${baseURL}/expense/create`, payload, config)
+		dispatch(resetExpenseCreated())
 		return data;
 	} catch (error) {
 		if (!error?.response) {
@@ -38,6 +44,7 @@ export const updateExpenseAction = createAsyncThunk('expense/update', async (pay
 	try {
 		// http call
 		const { data } = await axios.put(`${baseURL}/expense/${payload?.id}`, payload, config)
+		dispatch(resetExpenseUpdated())
 		return data;
 	} catch (error) {
 		if (!error?.response) {
@@ -78,6 +85,10 @@ const expenseSlice = createSlice({
 		builder.addCase(createExpenseAction.pending, (state, action) => {
 			state.loading = true;
 		});
+
+		builder.addCase(resetExpenseCreated, (state, action) => {
+			state.isExpenseCreated = true;
+		})
 
 		// Handle success state
 		builder.addCase(createExpenseAction.fulfilled, (state, action) => {
@@ -120,6 +131,10 @@ const expenseSlice = createSlice({
 		builder.addCase(updateExpenseAction.pending, (state, action) => {
 			state.loading = true;
 		});
+
+		builder.addCase(resetExpenseUpdated, (state, action) => {
+			state.isExpenseUpdated = true;
+		})
 
 		// Handle success state
 		builder.addCase(updateExpenseAction.fulfilled, (state, action) => {

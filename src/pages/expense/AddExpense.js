@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import moneySVG from "../../img/money.svg";
 import { createExpenseAction } from "../../redux/slices/expenses/expenseSlices";
 import DisabledButton from "../../components/DisabledButton";
-// import ErrorDisplayMessage from "../../components/ErrorDisplayMessage";
+import ErrorDisplayMessage from "../../components/ErrorDisplayMessage";
 
 //form validations
 const formSchema = Yup.object({
@@ -16,7 +16,7 @@ const formSchema = Yup.object({
 });
 
 const AddExpense = props => {
-	const history = useNavigate();
+	const navigate = useNavigate();
 	//dispatch
 	const dispatch = useDispatch();
 	//formik form
@@ -38,8 +38,8 @@ const AddExpense = props => {
 
 	//Redirect
 	useEffect(() => {
-		if (isExpCreated) history.push("/expenses");
-	}, [isExpCreated, dispatch]);
+		if (expenseCreated) navigate("/expenses");
+	}, [expenseCreated, dispatch]);
 	return (
 		<>
 			<section className="py-5 bg-danger vh-100">
@@ -59,11 +59,11 @@ const AddExpense = props => {
 									<span className="text-muted">Expense</span>
 									<h2 className="mb-4 fw-light">Record New Expense</h2>
 									{/* Display income Err */}
-									{/* {serverErr || appErr ? (
+									{serverErr || appErr ? (
 										<ErrorDisplayMessage>
 											{serverErr} {appErr}
 										</ErrorDisplayMessage>
-									) : null} */}
+									) : null}
 
 									<div className="mb-3 input-group">
 										<input

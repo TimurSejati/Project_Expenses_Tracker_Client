@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import moneySVG from "../../img/money.svg";
 import { createIncomeAction } from "../../redux/slices/income/incomeSlices";
 import DisabledButton from "../../components/DisabledButton";
-// import ErrorDisplayMessage from "../../components/ErrorDisplayMessage";
+import ErrorDisplayMessage from "../../components/ErrorDisplayMessage";
+
 //form validations
 const formSchema = Yup.object({
 	title: Yup.string().required("title is required"),
@@ -15,7 +16,7 @@ const formSchema = Yup.object({
 });
 
 const AddIncome = () => {
-	const history = useNavigate();
+	const navigate = useNavigate();
 	//dispatch
 	const dispatch = useDispatch();
 	//formik form
@@ -33,12 +34,12 @@ const AddIncome = () => {
 
 	//Get expense created from store
 	const state = useSelector(state => state.incomes);
-	const { loading, appErr, serverErr, incomeCreated, isIncCreated } = state;
+	const { loading, appErr, serverErr, incomeCreated, isIncomeCreated } = state;
 
 	// Redirect
 	useEffect(() => {
-		if (isIncCreated) history.push("/incomes");
-	}, [isIncCreated, dispatch]);
+		if (isIncomeCreated) navigate("/incomes");
+	}, [isIncomeCreated, dispatch]);
 	return (
 		<>
 			<section className="py-5 bg-success vh-100">
@@ -58,11 +59,11 @@ const AddIncome = () => {
 									<span className="text-muted">Income</span>
 									<h2 className="mb-4 fw-light">Record New Income</h2>
 									{/* Display income Err */}
-									{/* {serverErr || appErr ? (
+									{serverErr || appErr ? (
 										<ErrorDisplayMessage>
 											{serverErr} {appErr}
 										</ErrorDisplayMessage>
-									) : null} */}
+									) : null}
 									<div className="mb-3 input-group">
 										<input
 											value={formik.values.title}
