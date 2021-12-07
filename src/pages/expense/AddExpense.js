@@ -34,12 +34,12 @@ const AddExpense = props => {
 
 	//Get expense created from store
 	const state = useSelector(state => state.expenses);
-	const { loading, appErr, serverErr, expenseCreated, isExpCreated } = state;
+	const { loading, appErr, serverErr, expenseCreated, isExpenseCreated } = state;
 
 	//Redirect
 	useEffect(() => {
-		if (expenseCreated) navigate("/expenses");
-	}, [expenseCreated, dispatch]);
+		if (isExpenseCreated) navigate("/expenses");
+	}, [isExpenseCreated, dispatch]);
 	return (
 		<>
 			<section className="py-5 bg-danger vh-100">

@@ -1,20 +1,20 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import LoadingComponent from "../../components/Loading";
-// import ErrorDisplayMessage from "../../components/ErrorDisplayMessage";
-// import { fetchAccountStatsAction } from "../../redux/slices/accountsStats/accountStatSlices";
-// import GraphDtata from "../../components/GraphDtata";
+import LoadingComponent from "../../components/Loading";
+import ErrorDisplayMessage from "../../components/ErrorDisplayMessage";
+import { fetchAccountStatsAction } from "../../redux/slices/accountStats/accountStatsSlices";
+import GraphData from "../../components/GraphData";
 // import currencyFormatter from "../../utils/cuurencyFormatter";
 
 const DashboardData = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(fetchAccountStatsAction());
+    dispatch(fetchAccountStatsAction());
   }, [dispatch]);
 
   const account = useSelector(state => state.account);
-  // const { loading, accountDetails, appErr, serverErr } = account;
+  const { loading, accountDetails, appErr, serverErr } = account;
 
   return (
     <>
@@ -29,10 +29,10 @@ const DashboardData = () => {
         <section class="py-6">
           <div class="container">
             {/* Grpah */}
-            {/* <GraphDtata
+            <GraphData
               income={accountDetails?.incomeStats[0]?.totalIncome}
-              expense={accountDetails?.expenseStats[0]?.totalExp}
-            /> */}
+              expense={accountDetails?.expenseStats[0]?.totalExpense}
+            />
             <div
               style={{
                 display: "flex",
@@ -61,39 +61,40 @@ const DashboardData = () => {
                       Total Expenses
                     </span>
                   </div>
-                  {/* <h1 class="mb-4">
-                    {currencyFormatter(
+                  <h1 class="mb-4">
+                    {/* {currencyFormatter(
                       "USD",
                       accountDetails?.expenseStats[0]?.totalExp
-                    )}
-                  </h1> */}
+                    )} */}
+                    {accountDetails?.expenseStats[0]?.totalExpense}
+                  </h1>
                   <p class="mb-0">
                     <span>Number of Transactions</span>
                     <span class="text-danger ms-1">
-                      {/* <span>
-                        {accountDetails?.expenseStats[0]?.totalRecordsExp}
-                      </span> */}
+                      <span>
+                        {accountDetails?.expenseStats[0]?.totalRecordExpense}
+                      </span>
                     </span>
                   </p>
 
                   <p class="mb-0">
                     <span>Minimum Transactions</span>
                     <span class="text-danger ms-1">
-                      {/* <span>{accountDetails?.expenseStats[0]?.minExp}</span> */}
+                      <span>{accountDetails?.expenseStats[0]?.minExpense}</span>
                     </span>
                   </p>
 
                   <p class="mb-0">
                     <span>Maximum Transactions</span>
                     <span class="text-danger ms-1">
-                      {/* <span>{accountDetails?.expenseStats[0]?.maxExp}</span> */}
+                      <span>{accountDetails?.expenseStats[0]?.maxExpense}</span>
                     </span>
                   </p>
 
                   <p class="mb-0">
                     <span>Average Transactions</span>
                     <span class="text-danger ms-1">
-                      {/* <span>{accountDetails?.expenseStats[0]?.averageExp}</span> */}
+                      <span>{accountDetails?.expenseStats[0]?.averageExpense}</span>
                     </span>
                   </p>
                 </div>
@@ -116,13 +117,14 @@ const DashboardData = () => {
                       "USD",
                       accountDetails?.incomeStats[0]?.totalIncome
                     )} */}
+                    {accountDetails?.incomeStats[0]?.totalIncome}
                   </h1>
 
                   <p class="mb-0">
                     <span>Number of Transactions</span>
                     <span class="text-danger ms-1">
                       <span>
-                        {/* {accountDetails?.incomeStats[0]?.totalRecordsIncome} */}
+                        {accountDetails?.incomeStats[0]?.totalRecordIncome}
                       </span>
                     </span>
                   </p>
@@ -131,7 +133,7 @@ const DashboardData = () => {
                     <span>Minimum Transactions</span>
                     <span class="text-danger ms-1">
                       <span>
-                        {/* {accountDetails?.incomeStats[0]?.totalRecordsIncome} */}
+                        {accountDetails?.incomeStats[0]?.totalRecordsIncome}
                       </span>
                     </span>
                   </p>
@@ -139,7 +141,7 @@ const DashboardData = () => {
                   <p class="mb-0">
                     <span>Maximum Transactions</span>
                     <span class="text-danger ms-1">
-                      {/* <span>{accountDetails?.incomeStats[0]?.maxIncome}</span> */}
+                      <span>{accountDetails?.incomeStats[0]?.maxIncome}</span>
                     </span>
                   </p>
 
@@ -147,7 +149,7 @@ const DashboardData = () => {
                     <span>Average Transactions</span>
                     <span class="text-danger ms-1">
                       <span>
-                        {/* {accountDetails?.incomeStats[0]?.averageIncome} */}
+                        {accountDetails?.incomeStats[0]?.averageIncome}
                       </span>
                     </span>
                   </p>
