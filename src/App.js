@@ -14,6 +14,8 @@ import DashboardData from './pages/users/DashboardData';
 import Login from './pages/users/Login';
 import Profile from './pages/users/Profile';
 import Register from './pages/users/Register';
+import UserProfileExpList from './pages/users/UserProfileExpList';
+import UserProfileIncList from './pages/users/UserProfileIncList';
 
 function App() {
   return (
@@ -28,8 +30,14 @@ function App() {
 
         <Route exact path="/not-found" element={<NotAdmin />} />
 
-        <Route exact path="/add-income" element={<ProtectedRoute />}>
-          <Route exact path="/add-income" element={<AddIncome />} />
+        <Route exact path="/dashboard" element={<AdminRoute />}>
+          <Route exact path="/dashboard" element={<DashboardData />} />
+        </Route>
+
+        <Route exact path="/profile" element={<Profile />} />
+
+        <Route exact path="/edit/:id" element={<ProtectedRoute />}>
+          <Route exact path="/edit/:id" element={<EditContent />} />
         </Route>
 
         {/* Expense */}
@@ -41,15 +49,10 @@ function App() {
           <Route exact path="/expenses" element={<ExpensesList />} />
         </Route>
 
-        <Route exact path="/edit/:id" element={<ProtectedRoute />}>
-          <Route exact path="/edit/:id" element={<EditContent />} />
+        <Route exact path="/user-expenses" element={<ProtectedRoute />}>
+          <Route exact path="/user-expenses" element={<UserProfileExpList />} />
         </Route>
 
-        <Route exact path="/profile" element={<Profile />} />
-
-        <Route exact path="/dashboard" element={<AdminRoute />}>
-          <Route exact path="/dashboard" element={<DashboardData />} />
-        </Route>
 
         {/* Income */}
         <Route exact path="/add-income" element={<ProtectedRoute />}>
@@ -58,6 +61,10 @@ function App() {
 
         <Route exact path="/incomes" element={<ProtectedRoute />}>
           <Route exact path="/incomes" element={<IncomeList />} />
+        </Route>
+
+        <Route exact path="/user-incomes" element={<ProtectedRoute />}>
+          <Route exact path="/user-incomes" element={<UserProfileIncList />} />
         </Route>
 
       </Routes>

@@ -4,7 +4,7 @@ import LoadingComponent from "../../components/Loading";
 import ErrorDisplayMessage from "../../components/ErrorDisplayMessage";
 import { fetchAccountStatsAction } from "../../redux/slices/accountStats/accountStatsSlices";
 import GraphData from "../../components/GraphData";
-// import currencyFormatter from "../../utils/cuurencyFormatter";
+import currencyFormatter from "../../utils/currencyFormatter";
 
 const DashboardData = () => {
   const dispatch = useDispatch();
@@ -62,11 +62,10 @@ const DashboardData = () => {
                       </span>
                     </div>
                     <h1 class="mb-4">
-                      {/* {currencyFormatter(
-                  "USD",
-                  accountDetails?.expenseStats[0]?.totalExp
-                )} */}
-                      {accountDetails?.expenseStats[0]?.totalExpense}
+                      {currencyFormatter(
+                        "IDR",
+                        accountDetails?.expenseStats[0]?.totalExpense
+                      )}
                     </h1>
                     <p class="mb-0">
                       <span>Number of Transactions</span>
@@ -119,11 +118,10 @@ const DashboardData = () => {
                       </span>
                     </div>
                     <h1 class="mb-4">
-                      {/* {currencyFormatter(
-                  "USD",
-                  accountDetails?.incomeStats[0]?.totalIncome
-                )} */}
-                      {accountDetails?.incomeStats[0]?.totalIncome}
+                      {currencyFormatter(
+                        "IDR",
+                        accountDetails?.incomeStats[0]?.totalIncome
+                      )}
                     </h1>
 
                     <p class="mb-0">

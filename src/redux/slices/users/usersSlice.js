@@ -27,6 +27,53 @@ export const loginUserAction = createAsyncThunk('user/login', async (payload, { 
 	}
 });
 
+// Profile Action
+export const userProfileAction = createAsyncThunk('user/profile', async (payload, { rejectWithValue, getState, dispatch }) => {
+	const userToken = getState()?.users?.userAuth?.token;
+
+	const config = {
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": `Bearer ${userToken}`
+		}
+	}
+	try {
+		// http call
+		const { data } = await axios.get(`${baseURL}/users/profile`, config)
+		return data;
+	} catch (error) {
+		if (!error?.response) {
+			throw error;
+		}
+		return rejectWithValue(error?.response?.data)
+	}
+});
+
+
+// Updae Profile Action
+export const updateProfileAction = createAsyncThunk('user/update', async (payload, { rejectWithValue, getState, dispatch }) => {
+	const userToken = getState()?.users?.userAuth?.token;
+
+	const config = {
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": `Bearer ${userToken}`
+		}
+	}
+	try {
+		// http call
+		const { data } = await axios.put(`${baseURL}/users/profile`,
+			{ firstName: payload?.firstName, lastName: payload?.lastName, email: payload?.email }
+			, config)
+		return data;
+	} catch (error) {
+		if (!error?.response) {
+			throw error;
+		}
+		return rejectWithValue(error?.response?.data)
+	}
+});
+
 // Register Action
 export const registerUserAction = createAsyncThunk('user/register', async (payload, { rejectWithValue, getState, dispatch }) => {
 	const config = {
@@ -99,6 +146,53 @@ const usersSlices = createSlice({
 			state.userLoading = false;
 			state.userAppErr = action?.payload?.msg;
 			state.userServerErr = action?.error?.msg;
+		})
+
+		// Profile Action
+		// Handle pending state
+		builder.addCase(userProfileAction.pending, (state, action) => {
+			state.loading = true;
+			state.AppErr = undefined;
+			state.ServerErr = undefined;
+		});
+
+		// Handle success state
+		builder.addCase(userProfileAction.fulfilled, (state, action) => {
+			state.profile = action?.payload;
+			state.loading = false;
+			state.AppErr = undefined;
+			state.ServerErr = undefined;
+		})
+
+		// Handle success state
+		builder.addCase(userProfileAction.rejected, (state, action) => {
+			state.loading = false;
+			state.AppErr = action?.payload?.msg;
+			state.ServerErr = action?.error?.msg;
+		})
+
+
+		// Update Profile Action
+		// Handle pending state
+		builder.addCase(updateProfileAction.pending, (state, action) => {
+			state.loading = true;
+			state.AppErr = undefined;
+			state.ServerErr = undefined;
+		});
+
+		// Handle success state
+		builder.addCase(updateProfileAction.fulfilled, (state, action) => {
+			state.profile = action?.payload;
+			state.loading = false;
+			state.AppErr = undefined;
+			state.ServerErr = undefined;
+		})
+
+		// Handle success state
+		builder.addCase(updateProfileAction.rejected, (state, action) => {
+			state.loading = false;
+			state.AppErr = action?.payload?.msg;
+			state.ServerErr = action?.error?.msg;
 		})
 	}
 });
